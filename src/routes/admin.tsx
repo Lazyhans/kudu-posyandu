@@ -104,7 +104,7 @@ function AdminDashboard() {
   const balitaMap = new Map(balita.map((b) => [b.id, b]));
 
   return (
-    <AppShell title="Dashboard Admin">
+    <AppShell title="Dashboard Admin" requireRole="admin">
       <div className="space-y-4">
         <div className="rounded-2xl bg-gradient-to-br from-primary to-[color:var(--chart-5)] p-5 text-primary-foreground shadow-md">
           <div className="text-xs font-medium uppercase tracking-wider opacity-90">
