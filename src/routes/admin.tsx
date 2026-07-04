@@ -437,7 +437,7 @@ function KaderCreateDialog({
           </div>
           <div className="space-y-1.5">
             <Label>Posko RW</Label>
-            <Input value={form.posko_rw} onChange={set("posko_rw")} className="h-11" placeholder="mis. RW 06" required />
+            <Input value={form.posko_rw} onChange={set("posko_rw")} className="h-11" placeholder="mis. RW 04" required />
           </div>
           <div className="space-y-1.5">
             <Label>No. HP (opsional)</Label>
