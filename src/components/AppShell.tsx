@@ -27,7 +27,7 @@ export function AppShell({
   requireRole?: "admin" | "kader" | "any";
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isNavigating = useRouterState((s) => s.isLoading || s.isTransitioning);
+  const isNavigating = useRouterState({ select: (s) => s.isLoading || s.isTransitioning });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<AuthState>("checking");
