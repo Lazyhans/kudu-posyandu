@@ -1,22 +1,33 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { Home, Users, ClipboardList, Activity, LogOut, ShieldCheck, Loader2 } from "lucide-react";
+import {
+  Home,
+  Users,
+  ClipboardList,
+  Activity,
+  LogOut,
+  ShieldCheck,
+  Loader2,
+  UserCog,
+} from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
-
-const navItems = [
-  { to: "/admin", label: "Dashboard", icon: Home },
-  { to: "/balita", label: "Balita", icon: Users },
-  { to: "/pencatatan", label: "Catat", icon: ClipboardList },
-  { to: "/riwayat", label: "Riwayat", icon: Activity },
-];
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { currentRoleQuery, type UserRole } from "@/lib/queries";
 
 type AuthState = "checking" | "authed" | "guest";
 
-export function AppShell({ children, title }: { children: ReactNode; title?: string }) {
+export function AppShell({
+  children,
+  title,
+  requireRole,
+}: {
+  children: ReactNode;
+  title?: string;
+  requireRole?: "admin" | "kader" | "any";
+}) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isNavigating = useRouterState({ select: (s) => s.isLoading || s.isTransitioning });
+  const isNavigating = useRouterState((s) => s.isLoading || s.isTransitioning);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<AuthState>("checking");
@@ -26,9 +37,8 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
-      if (data.session) {
-        setStatus("authed");
-      } else {
+      if (data.session) setStatus("authed");
+      else {
         setStatus("guest");
         navigate({ to: "/auth", replace: true });
       }
@@ -39,15 +49,33 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
         navigate({ to: "/auth", replace: true });
         return;
       }
-      if (session) {
-        setStatus("authed");
-      }
+      if (session) setStatus("authed");
     });
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
     };
   }, [navigate]);
+
+  const { data: role, isLoading: roleLoading } = useQuery({
+    ...currentRoleQuery(),
+    enabled: status === "authed",
+  });
+
+  useEffect(() => {
+    if (status !== "authed" || roleLoading) return;
+    const need = requireRole ?? "any";
+    if (!role) {
+      toast.error("Akun belum memiliki peran. Hubungi admin.");
+      navigate({ to: "/auth", replace: true });
+      return;
+    }
+    if (need === "admin" && role !== "admin") {
+      navigate({ to: "/kader", replace: true });
+    } else if (need === "kader" && role !== "kader" && role !== "admin") {
+      navigate({ to: "/admin", replace: true });
+    }
+  }, [status, role, roleLoading, requireRole, navigate]);
 
   async function handleLogout() {
     setSigningOut(true);
@@ -62,9 +90,18 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
     }
   }
 
-  if (status !== "authed") {
-    return <FullScreenLoader label="Memverifikasi sesi admin..." />;
+  if (status !== "authed" || roleLoading || !role) {
+    return <FullScreenLoader label="Memverifikasi sesi..." />;
   }
+
+  const isAdmin = role === "admin";
+  const home = isAdmin ? "/admin" : "/kader";
+  const navItems: Array<{ to: string; label: string; icon: typeof Home }> = [
+    { to: home, label: "Dashboard", icon: Home },
+    { to: "/balita", label: "Balita", icon: Users },
+    { to: "/pencatatan", label: "Catat", icon: ClipboardList },
+    { to: "/riwayat", label: "Riwayat", icon: Activity },
+  ];
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -77,7 +114,12 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider opacity-80">
-              <ShieldCheck className="h-3 w-3" /> Admin · Kelurahan Kudu
+              {isAdmin ? (
+                <ShieldCheck className="h-3 w-3" />
+              ) : (
+                <UserCog className="h-3 w-3" />
+              )}{" "}
+              {isAdmin ? "Admin" : "Kader"} · Kelurahan Kudu
             </div>
             <h1 className="mt-0.5 truncate text-base font-semibold leading-tight">
               {title ?? "Posyandu Kelurahan Kudu"}
@@ -107,7 +149,7 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
         <div className="mx-auto grid max-w-2xl grid-cols-4">
           {navItems.map((item) => {
             const active =
-              item.to === "/admin" ? pathname === "/admin" : pathname.startsWith(item.to);
+              item.to === home ? pathname === home : pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
               <Link
