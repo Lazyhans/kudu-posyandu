@@ -13,7 +13,7 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const seed = useServerFn(ensureAdminSeed);
-  const [username, setUsername] = useState("kuduadmin");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
