@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { balitaListQuery, pencatatanListQuery } from "@/lib/queries";
 import { hitungUsiaBulan } from "@/lib/gizi";
-import { exportToCSV } from "@/lib/export";
+import { exportToXLSX } from "@/lib/export";
 import { Download, ChevronRight, Search } from "lucide-react";
 import { useState } from "react";
 
@@ -46,8 +46,8 @@ function RiwayatIndex() {
         Catatan: p.catatan ?? "",
       };
     });
-    const fname = `posyandu-rw06-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}.csv`;
-    exportToCSV(fname, rows);
+    const fname = `posyandu-kelurahan-kudu-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}.xlsx`;
+    exportToXLSX(fname, rows, "Posyandu Kelurahan Kudu");
   };
 
   const filtered = balita.filter(
@@ -58,7 +58,7 @@ function RiwayatIndex() {
     <AppShell title="Riwayat Rekam Medis">
       <div className="space-y-3">
         <Button onClick={exportBulanIni} className="h-12 w-full rounded-xl">
-          <Download className="mr-2 h-4 w-4" /> Ekspor Data Bulan Ini (CSV/Excel)
+          <Download className="mr-2 h-4 w-4" /> Ekspor Data Bulan Ini (Excel)
         </Button>
 
         <div className="relative">
