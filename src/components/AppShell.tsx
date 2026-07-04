@@ -58,7 +58,7 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
               KKN PPM XXVIII Universitas Semarang · Kelurahan Kudu
             </div>
             <h1 className="mt-0.5 text-base font-semibold leading-tight">
-              {title ?? "Posyandu RW 06"}
+              {title ?? "Posyandu Kelurahan Kudu"}
             </h1>
           </div>
           <button
