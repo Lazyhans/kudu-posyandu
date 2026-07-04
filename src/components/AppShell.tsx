@@ -34,10 +34,12 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
       }
     });
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
+      if (event === "SIGNED_OUT") {
         setStatus("guest");
         navigate({ to: "/auth", replace: true });
-      } else if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+        return;
+      }
+      if (session) {
         setStatus("authed");
       }
     });
