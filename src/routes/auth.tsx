@@ -17,14 +17,30 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  async function routeByRole() {
+    const { data: sess } = await supabase.auth.getSession();
+    const uid = sess.session?.user.id;
+    if (!uid) return;
+    const { data } = await supabase
+      .from("user_roles" as never)
+      .select("role")
+      .eq("user_id", uid);
+    const rows = (data ?? []) as unknown as Array<{ role: "admin" | "kader" }>;
+    if (rows.some((r) => r.role === "admin")) navigate({ to: "/admin", replace: true });
+    else if (rows.some((r) => r.role === "kader")) navigate({ to: "/kader", replace: true });
+    else {
+      toast.error("Akun belum memiliki peran. Hubungi admin.");
+      await supabase.auth.signOut();
+    }
+  }
+
   useEffect(() => {
-    // Pastikan admin default sudah tersedia
     seed({}).catch(() => {});
-    // Redirect jika sudah login
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) routeByRole();
     });
-  }, [seed, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seed]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,7 +50,7 @@ function AuthPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       toast.success("Berhasil masuk");
-      navigate({ to: "/admin" });
+      await routeByRole();
     } catch (err) {
       toast.error((err as Error).message || "Gagal masuk");
     } finally {
@@ -49,7 +65,7 @@ function AuthPage() {
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md">
             <ShieldCheck className="h-7 w-7" />
           </div>
-          <h1 className="mt-4 text-xl font-semibold">Login Admin Posyandu</h1>
+          <h1 className="mt-4 text-xl font-semibold">Login Admin & Kader</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Kelurahan Kudu
           </p>
