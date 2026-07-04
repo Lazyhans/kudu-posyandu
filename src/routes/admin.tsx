@@ -1,8 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   UserPlus,
   ClipboardPlus,
@@ -11,7 +33,19 @@ import {
   TrendingUp,
   Activity,
   Home,
+  UserCog,
+  Pencil,
+  Trash2,
+  MapPin,
+  Loader2,
 } from "lucide-react";
+import {
+  listKader,
+  createKader,
+  updateKader,
+  deleteKader,
+} from "@/lib/admin.functions";
+import { toast } from "sonner";
 import { balitaListQuery, pencatatanListQuery } from "@/lib/queries";
 import { badgeGizi, type StatusGizi } from "@/lib/gizi";
 import {
