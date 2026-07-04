@@ -1,9 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, LogIn, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { ensureAdminSeed } from "@/lib/admin.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -12,7 +10,6 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const seed = useServerFn(ensureAdminSeed);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,12 +32,11 @@ function AuthPage() {
   }
 
   useEffect(() => {
-    seed({}).catch(() => {});
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) routeByRole();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seed]);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
