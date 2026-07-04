@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RiwayatIndexRouteImport } from './routes/riwayat.index'
 import { Route as PencatatanIndexRouteImport } from './routes/pencatatan.index'
@@ -16,6 +17,11 @@ import { Route as BalitaIndexRouteImport } from './routes/balita.index'
 import { Route as RiwayatIdRouteImport } from './routes/riwayat.$id'
 import { Route as BalitaTambahRouteImport } from './routes/balita.tambah'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const BalitaTambahRoute = BalitaTambahRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/balita/tambah': typeof BalitaTambahRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita/': typeof BalitaIndexRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/balita/tambah': typeof BalitaTambahRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita': typeof BalitaIndexRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/balita/tambah': typeof BalitaTambahRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita/': typeof BalitaIndexRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/balita/tambah'
     | '/riwayat/$id'
     | '/balita/'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/balita/tambah'
     | '/riwayat/$id'
     | '/balita'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/balita/tambah'
     | '/riwayat/$id'
     | '/balita/'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   BalitaTambahRoute: typeof BalitaTambahRoute
   RiwayatIdRoute: typeof RiwayatIdRoute
   BalitaIndexRoute: typeof BalitaIndexRoute
@@ -110,6 +123,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   BalitaTambahRoute: BalitaTambahRoute,
   RiwayatIdRoute: RiwayatIdRoute,
   BalitaIndexRoute: BalitaIndexRoute,
