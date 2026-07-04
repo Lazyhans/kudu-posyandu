@@ -68,8 +68,8 @@ function TambahBalita() {
             <Field label="Nama Ibu / Orang Tua">
               <Input value={form.nama_orangtua} onChange={set("nama_orangtua")} className="h-12" placeholder="Nama ibu/orang tua" />
             </Field>
-            <Field label="Alamat RT (lingkup RW 06)">
-              <Input value={form.alamat_rt} onChange={set("alamat_rt")} className="h-12" placeholder="Contoh: RT 03 / RW 06" />
+            <Field label="Alamat RT / RW">
+              <Input value={form.alamat_rt} onChange={set("alamat_rt")} className="h-12" placeholder="Contoh: RT 03 / RW 04" />
             </Field>
             <Button type="submit" disabled={loading} className="h-12 w-full rounded-xl text-base font-semibold">
               {loading ? "Menyimpan..." : "Simpan Data Balita"}

@@ -53,10 +53,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1" },
-      { title: "Digitalisasi Administrasi Posyandu RW 06 Kelurahan Kudu" },
-      { name: "description", content: "Aplikasi digitalisasi pencatatan tumbuh kembang balita oleh kader Posyandu RW 06 Kelurahan Kudu." },
+      { title: "Digitalisasi Administrasi Posyandu Kelurahan Kudu" },
+      { name: "description", content: "Aplikasi digitalisasi pencatatan tumbuh kembang balita oleh kader Posyandu Kelurahan Kudu." },
       { name: "theme-color", content: "#2b8a8a" },
-      { property: "og:title", content: "Posyandu RW 06 Kudu" },
+      { property: "og:title", content: "Posyandu Kelurahan Kudu" },
       { property: "og:description", content: "Digitalisasi pencatatan tumbuh kembang balita." },
       { property: "og:type", content: "website" },
     ],
