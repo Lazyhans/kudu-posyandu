@@ -22,7 +22,7 @@ function AuthPage() {
     seed({}).catch(() => {});
     // Redirect jika sudah login
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/" });
+      if (data.session) navigate({ to: "/admin" });
     });
   }, [seed, navigate]);
 

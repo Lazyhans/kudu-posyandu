@@ -107,7 +107,7 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
         <div className="mx-auto grid max-w-2xl grid-cols-4">
           {navItems.map((item) => {
             const active =
-              item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              item.to === "/admin" ? pathname === "/admin" : pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
               <Link
