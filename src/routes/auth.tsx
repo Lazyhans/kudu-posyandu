@@ -51,7 +51,7 @@ function AuthPage() {
           </div>
           <h1 className="mt-4 text-xl font-semibold">Login Admin Posyandu</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            RW 06 Kelurahan Kudu
+            Kelurahan Kudu
           </p>
         </div>
 
@@ -68,7 +68,7 @@ function AuthPage() {
               autoComplete="username"
               required
               className="mt-1 w-full rounded-lg border bg-background px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="kuduadmin"
+              placeholder="username"
             />
           </div>
           <div>
@@ -96,7 +96,7 @@ function AuthPage() {
             Masuk
           </button>
           <p className="text-center text-xs text-muted-foreground">
-            Khusus kader & admin Posyandu RW 06
+            Khusus kader & admin Posyandu Kelurahan Kudu
           </p>
         </form>
       </div>
