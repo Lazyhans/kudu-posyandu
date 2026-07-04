@@ -1,8 +1,9 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { Home, Users, ClipboardList, Activity, LogOut } from "lucide-react";
+import { Home, Users, ClipboardList, Activity, LogOut, ShieldCheck, Loader2 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const navItems = [
   { to: "/", label: "Beranda", icon: Home },
@@ -11,23 +12,34 @@ const navItems = [
   { to: "/riwayat", label: "Riwayat", icon: Activity },
 ];
 
+type AuthState = "checking" | "authed" | "guest";
+
 export function AppShell({ children, title }: { children: ReactNode; title?: string }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isNavigating = useRouterState({ select: (s) => s.isLoading || s.isTransitioning });
   const navigate = useNavigate();
-  const [ready, setReady] = useState(false);
+  const queryClient = useQueryClient();
+  const [status, setStatus] = useState<AuthState>("checking");
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
-      if (!data.session) {
-        navigate({ to: "/auth", replace: true });
+      if (data.session) {
+        setStatus("authed");
       } else {
-        setReady(true);
+        setStatus("guest");
+        navigate({ to: "/auth", replace: true });
       }
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_OUT") navigate({ to: "/auth", replace: true });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        setStatus("guest");
+        navigate({ to: "/auth", replace: true });
+      } else if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+        setStatus("authed");
+      }
     });
     return () => {
       mounted = false;
@@ -36,37 +48,53 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
   }, [navigate]);
 
   async function handleLogout() {
-    await supabase.auth.signOut();
-    toast.success("Berhasil keluar");
-    navigate({ to: "/auth", replace: true });
+    setSigningOut(true);
+    try {
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      await supabase.auth.signOut();
+      toast.success("Berhasil keluar");
+      navigate({ to: "/auth", replace: true });
+    } finally {
+      setSigningOut(false);
+    }
   }
 
-  if (!ready) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
-        Memuat...
-      </div>
-    );
+  if (status !== "authed") {
+    return <FullScreenLoader label="Memverifikasi sesi admin..." />;
   }
 
   return (
     <div className="min-h-screen bg-background pb-24">
+      {isNavigating && (
+        <div className="fixed left-0 right-0 top-0 z-50 h-0.5 overflow-hidden bg-primary/20">
+          <div className="h-full w-1/3 animate-[loader_1.1s_ease-in-out_infinite] bg-primary" />
+        </div>
+      )}
       <header className="sticky top-0 z-40 border-b bg-primary text-primary-foreground shadow-sm">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
-          <div>
-            <div className="text-[10px] uppercase tracking-wider opacity-80">
-              KKN PPM XXVIII Universitas Semarang · Kelurahan Kudu
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider opacity-80">
+              <ShieldCheck className="h-3 w-3" /> Admin · Kelurahan Kudu
             </div>
-            <h1 className="mt-0.5 text-base font-semibold leading-tight">
+            <h1 className="mt-0.5 truncate text-base font-semibold leading-tight">
               {title ?? "Posyandu Kelurahan Kudu"}
             </h1>
           </div>
           <button
             onClick={handleLogout}
+            disabled={signingOut}
             aria-label="Keluar"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+            className="flex shrink-0 items-center gap-1.5 rounded-full bg-primary-foreground/15 px-3 py-2 text-xs font-semibold hover:bg-primary-foreground/25 transition-colors disabled:opacity-60"
           >
-            <LogOut className="h-4 w-4" />
+            {signingOut ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <LogOut className="h-4 w-4" />
+            )}
+            <span className="hidden sm:inline">
+              {signingOut ? "Keluar..." : "Logout"}
+            </span>
           </button>
         </div>
       </header>
@@ -94,6 +122,18 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
           })}
         </div>
       </nav>
+    </div>
+  );
+}
+
+function FullScreenLoader({ label }: { label: string }) {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background px-6 text-center">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <Loader2 className="h-7 w-7 animate-spin" />
+      </div>
+      <div className="text-sm font-medium text-foreground">{label}</div>
+      <div className="text-xs text-muted-foreground">Mohon tunggu sebentar</div>
     </div>
   );
 }
