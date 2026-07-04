@@ -1,0 +1,24 @@
+export function exportToCSV(filename: string, rows: Record<string, unknown>[]) {
+  if (rows.length === 0) {
+    alert("Tidak ada data untuk diekspor");
+    return;
+  }
+  const headers = Object.keys(rows[0]);
+  const escape = (v: unknown) => {
+    const s = v === null || v === undefined ? "" : String(v);
+    return `"${s.replace(/"/g, '""')}"`;
+  };
+  const csv = [
+    headers.join(","),
+    ...rows.map((r) => headers.map((h) => escape(r[h])).join(",")),
+  ].join("\n");
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
