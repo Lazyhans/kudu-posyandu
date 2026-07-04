@@ -1,6 +1,29 @@
 import { supabase } from "@/integrations/supabase/client";
 import { queryOptions } from "@tanstack/react-query";
 
+export type UserRole = "admin" | "kader" | null;
+
+export const currentRoleQuery = () =>
+  queryOptions({
+    queryKey: ["auth", "role"],
+    staleTime: 60_000,
+    queryFn: async (): Promise<UserRole> => {
+      const { data: sess } = await supabase.auth.getSession();
+      const uid = sess.session?.user.id;
+      if (!uid) return null;
+      const { data, error } = await supabase
+        .from("user_roles" as never)
+        .select("role")
+        .eq("user_id", uid);
+      if (error) return null;
+      const rows = (data ?? []) as unknown as Array<{ role: "admin" | "kader" }>;
+      if (rows.some((r) => r.role === "admin")) return "admin";
+      if (rows.some((r) => r.role === "kader")) return "kader";
+      return null;
+    },
+  });
+
+
 export type Balita = {
   id: string;
   nama_lengkap: string;
