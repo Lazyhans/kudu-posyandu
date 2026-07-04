@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 const navItems = [
-  { to: "/", label: "Beranda", icon: Home },
+  { to: "/admin", label: "Dashboard", icon: Home },
   { to: "/balita", label: "Balita", icon: Users },
   { to: "/pencatatan", label: "Catat", icon: ClipboardList },
   { to: "/riwayat", label: "Riwayat", icon: Activity },
@@ -107,7 +107,7 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
         <div className="mx-auto grid max-w-2xl grid-cols-4">
           {navItems.map((item) => {
             const active =
-              item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              item.to === "/admin" ? pathname === "/admin" : pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
               <Link
