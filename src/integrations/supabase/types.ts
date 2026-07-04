@@ -14,7 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      balita: {
+        Row: {
+          alamat_rt: string
+          created_at: string
+          id: string
+          jenis_kelamin: string
+          nama_lengkap: string
+          nama_orangtua: string
+          nik: string
+          tanggal_lahir: string
+          updated_at: string
+        }
+        Insert: {
+          alamat_rt: string
+          created_at?: string
+          id?: string
+          jenis_kelamin: string
+          nama_lengkap: string
+          nama_orangtua: string
+          nik: string
+          tanggal_lahir: string
+          updated_at?: string
+        }
+        Update: {
+          alamat_rt?: string
+          created_at?: string
+          id?: string
+          jenis_kelamin?: string
+          nama_lengkap?: string
+          nama_orangtua?: string
+          nik?: string
+          tanggal_lahir?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pencatatan: {
+        Row: {
+          balita_id: string
+          berat_badan: number
+          catatan: string | null
+          created_at: string
+          id: string
+          status_gizi: string
+          tanggal: string
+          tinggi_badan: number
+        }
+        Insert: {
+          balita_id: string
+          berat_badan: number
+          catatan?: string | null
+          created_at?: string
+          id?: string
+          status_gizi: string
+          tanggal?: string
+          tinggi_badan: number
+        }
+        Update: {
+          balita_id?: string
+          berat_badan?: number
+          catatan?: string | null
+          created_at?: string
+          id?: string
+          status_gizi?: string
+          tanggal?: string
+          tinggi_badan?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pencatatan_balita_id_fkey"
+            columns: ["balita_id"]
+            isOneToOne: false
+            referencedRelation: "balita"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
