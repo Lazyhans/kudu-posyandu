@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RiwayatIndexRouteImport } from './routes/riwayat.index'
+import { Route as PencatatanIndexRouteImport } from './routes/pencatatan.index'
+import { Route as BalitaIndexRouteImport } from './routes/balita.index'
+import { Route as RiwayatIdRouteImport } from './routes/riwayat.$id'
+import { Route as BalitaTambahRouteImport } from './routes/balita.tambah'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RiwayatIndexRoute = RiwayatIndexRouteImport.update({
+  id: '/riwayat/',
+  path: '/riwayat/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PencatatanIndexRoute = PencatatanIndexRouteImport.update({
+  id: '/pencatatan/',
+  path: '/pencatatan/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BalitaIndexRoute = BalitaIndexRouteImport.update({
+  id: '/balita/',
+  path: '/balita/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiwayatIdRoute = RiwayatIdRouteImport.update({
+  id: '/riwayat/$id',
+  path: '/riwayat/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BalitaTambahRoute = BalitaTambahRouteImport.update({
+  id: '/balita/tambah',
+  path: '/balita/tambah',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/balita/tambah': typeof BalitaTambahRoute
+  '/riwayat/$id': typeof RiwayatIdRoute
+  '/balita/': typeof BalitaIndexRoute
+  '/pencatatan/': typeof PencatatanIndexRoute
+  '/riwayat/': typeof RiwayatIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/balita/tambah': typeof BalitaTambahRoute
+  '/riwayat/$id': typeof RiwayatIdRoute
+  '/balita': typeof BalitaIndexRoute
+  '/pencatatan': typeof PencatatanIndexRoute
+  '/riwayat': typeof RiwayatIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/balita/tambah': typeof BalitaTambahRoute
+  '/riwayat/$id': typeof RiwayatIdRoute
+  '/balita/': typeof BalitaIndexRoute
+  '/pencatatan/': typeof PencatatanIndexRoute
+  '/riwayat/': typeof RiwayatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/balita/tambah'
+    | '/riwayat/$id'
+    | '/balita/'
+    | '/pencatatan/'
+    | '/riwayat/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/balita/tambah'
+    | '/riwayat/$id'
+    | '/balita'
+    | '/pencatatan'
+    | '/riwayat'
+  id:
+    | '__root__'
+    | '/'
+    | '/balita/tambah'
+    | '/riwayat/$id'
+    | '/balita/'
+    | '/pencatatan/'
+    | '/riwayat/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BalitaTambahRoute: typeof BalitaTambahRoute
+  RiwayatIdRoute: typeof RiwayatIdRoute
+  BalitaIndexRoute: typeof BalitaIndexRoute
+  PencatatanIndexRoute: typeof PencatatanIndexRoute
+  RiwayatIndexRoute: typeof RiwayatIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +117,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/riwayat/': {
+      id: '/riwayat/'
+      path: '/riwayat'
+      fullPath: '/riwayat/'
+      preLoaderRoute: typeof RiwayatIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pencatatan/': {
+      id: '/pencatatan/'
+      path: '/pencatatan'
+      fullPath: '/pencatatan/'
+      preLoaderRoute: typeof PencatatanIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/balita/': {
+      id: '/balita/'
+      path: '/balita'
+      fullPath: '/balita/'
+      preLoaderRoute: typeof BalitaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/riwayat/$id': {
+      id: '/riwayat/$id'
+      path: '/riwayat/$id'
+      fullPath: '/riwayat/$id'
+      preLoaderRoute: typeof RiwayatIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/balita/tambah': {
+      id: '/balita/tambah'
+      path: '/balita/tambah'
+      fullPath: '/balita/tambah'
+      preLoaderRoute: typeof BalitaTambahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BalitaTambahRoute: BalitaTambahRoute,
+  RiwayatIdRoute: RiwayatIdRoute,
+  BalitaIndexRoute: BalitaIndexRoute,
+  PencatatanIndexRoute: PencatatanIndexRoute,
+  RiwayatIndexRoute: RiwayatIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
