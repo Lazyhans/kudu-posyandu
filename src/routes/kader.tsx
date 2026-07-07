@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Activity,
   Home,
+  Settings,
 } from "lucide-react";
 import { balitaListQuery, pencatatanListQuery } from "@/lib/queries";
 import { badgeGizi, type StatusGizi } from "@/lib/gizi";
@@ -96,6 +97,9 @@ function KaderDashboard() {
           </Button>
           <Button asChild size="lg" variant="secondary" className="h-16 rounded-xl text-sm font-semibold">
             <Link to="/balita"><Users className="mr-2 h-5 w-5" /> Kelola Balita</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="h-16 rounded-xl text-sm font-semibold">
+            <Link to="/profil"><Settings className="mr-2 h-5 w-5" /> Pengaturan Profil</Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="h-16 rounded-xl text-sm font-semibold">
             <Link to="/"><Home className="mr-2 h-5 w-5" /> Halaman Publik</Link>
