@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Activity,
   Home,
+  Settings,
 } from "lucide-react";
 import { balitaListQuery, pencatatanListQuery } from "@/lib/queries";
 import { badgeGizi, type StatusGizi } from "@/lib/gizi";
