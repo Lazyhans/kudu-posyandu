@@ -104,12 +104,27 @@ function Pencatatan() {
             </div>
 
             {showBadge && (
-              <div className={`flex items-center justify-between rounded-xl border-2 px-4 py-3 ${badge.className}`}>
-                <div className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  <span className="text-xs font-medium uppercase tracking-wider">Status Gizi</span>
+              <div className="space-y-2">
+                <div className={`flex items-center justify-between rounded-xl border-2 px-4 py-3 ${badge.className}`}>
+                  <div className="flex items-center gap-2">
+                    <Activity className="h-5 w-5" />
+                    <span className="text-xs font-medium uppercase tracking-wider">Status Gizi</span>
+                  </div>
+                  <span className="text-base font-bold">{badge.label}</span>
                 </div>
-                <span className="text-base font-bold">{badge.label}</span>
+                {zDetail && (
+                  <div className="rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+                    <div className="mb-1 font-medium">Standar Kemenkes (PMK 2/2020 · WHO)</div>
+                    <div className="flex justify-between">
+                      <span>Z-Score BB/U (berat/umur)</span>
+                      <span className="font-mono">{zDetail.zBB > 0 ? "+" : ""}{zDetail.zBB} SD</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Z-Score TB/U (tinggi/umur)</span>
+                      <span className="font-mono">{zDetail.zTB > 0 ? "+" : ""}{zDetail.zTB} SD</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
