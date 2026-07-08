@@ -62,7 +62,7 @@ function Pencatatan() {
     navigate({ to: "/riwayat/$id", params: { id: balitaId } });
   };
 
-  const selected = balita.find((b) => b.id === balitaId);
+
 
   return (
     <AppShell title="Catat Bulanan">
