@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { balitaListQuery } from "@/lib/queries";
-import { hitungStatusGizi, badgeGizi, hitungUsiaBulan } from "@/lib/gizi";
+import { hitungStatusGizi, badgeGizi, hitungUsiaBulan, detailZScore } from "@/lib/gizi";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Activity } from "lucide-react";
@@ -29,9 +29,18 @@ function Pencatatan() {
   const [catatan, setCatatan] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const status = useMemo(() => hitungStatusGizi(parseFloat(bb), parseFloat(tb)), [bb, tb]);
+  const selected = balita.find((b) => b.id === balitaId);
+  const usiaBln = selected ? hitungUsiaBulan(selected.tanggal_lahir) : undefined;
+  const jk = selected?.jenis_kelamin as "L" | "P" | undefined;
+  const status = useMemo(
+    () => hitungStatusGizi(parseFloat(bb), parseFloat(tb), usiaBln, jk),
+    [bb, tb, usiaBln, jk],
+  );
   const badge = badgeGizi(status);
   const showBadge = bb && tb && parseFloat(bb) > 0 && parseFloat(tb) > 0;
+  const zDetail = showBadge && selected && usiaBln !== undefined && jk
+    ? detailZScore(parseFloat(bb), parseFloat(tb), usiaBln, jk)
+    : null;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +62,7 @@ function Pencatatan() {
     navigate({ to: "/riwayat/$id", params: { id: balitaId } });
   };
 
-  const selected = balita.find((b) => b.id === balitaId);
+
 
   return (
     <AppShell title="Catat Bulanan">
@@ -95,12 +104,27 @@ function Pencatatan() {
             </div>
 
             {showBadge && (
-              <div className={`flex items-center justify-between rounded-xl border-2 px-4 py-3 ${badge.className}`}>
-                <div className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  <span className="text-xs font-medium uppercase tracking-wider">Status Gizi</span>
+              <div className="space-y-2">
+                <div className={`flex items-center justify-between rounded-xl border-2 px-4 py-3 ${badge.className}`}>
+                  <div className="flex items-center gap-2">
+                    <Activity className="h-5 w-5" />
+                    <span className="text-xs font-medium uppercase tracking-wider">Status Gizi</span>
+                  </div>
+                  <span className="text-base font-bold">{badge.label}</span>
                 </div>
-                <span className="text-base font-bold">{badge.label}</span>
+                {zDetail && (
+                  <div className="rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+                    <div className="mb-1 font-medium">Standar Kemenkes (PMK 2/2020 · WHO)</div>
+                    <div className="flex justify-between">
+                      <span>Z-Score BB/U (berat/umur)</span>
+                      <span className="font-mono">{zDetail.zBB > 0 ? "+" : ""}{zDetail.zBB} SD</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Z-Score TB/U (tinggi/umur)</span>
+                      <span className="font-mono">{zDetail.zTB > 0 ? "+" : ""}{zDetail.zTB} SD</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
