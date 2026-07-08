@@ -29,9 +29,18 @@ function Pencatatan() {
   const [catatan, setCatatan] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const status = useMemo(() => hitungStatusGizi(parseFloat(bb), parseFloat(tb)), [bb, tb]);
+  const selected = balita.find((b) => b.id === balitaId);
+  const usiaBln = selected ? hitungUsiaBulan(selected.tanggal_lahir) : undefined;
+  const jk = selected?.jenis_kelamin as "L" | "P" | undefined;
+  const status = useMemo(
+    () => hitungStatusGizi(parseFloat(bb), parseFloat(tb), usiaBln, jk),
+    [bb, tb, usiaBln, jk],
+  );
   const badge = badgeGizi(status);
   const showBadge = bb && tb && parseFloat(bb) > 0 && parseFloat(tb) > 0;
+  const zDetail = showBadge && selected && usiaBln !== undefined && jk
+    ? detailZScore(parseFloat(bb), parseFloat(tb), usiaBln, jk)
+    : null;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
