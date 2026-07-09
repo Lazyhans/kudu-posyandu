@@ -81,13 +81,48 @@ function Pencatatan() {
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5">
               <Label>Pilih Balita</Label>
-              <select value={balitaId} onChange={(e) => setBalitaId(e.target.value)}
-                className="h-12 w-full rounded-md border border-input bg-background px-3">
-                <option value="">-- Pilih --</option>
-                {balita.map((b) => (
-                  <option key={b.id} value={b.id}>{b.nama_lengkap} ({b.nik})</option>
-                ))}
-              </select>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="h-12 w-full justify-between rounded-xl px-3"
+                  >
+                    <span className="truncate">
+                      {selected ? `${selected.nama_lengkap} (${selected.nik})` : "Cari nama balita..."}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Ketik nama atau NIK..." />
+                    <CommandList>
+                      <CommandEmpty>Tidak ditemukan.</CommandEmpty>
+                      <CommandGroup>
+                        {balita.map((b) => (
+                          <CommandItem
+                            key={b.id}
+                            value={`${b.nama_lengkap} ${b.nik}`}
+                            onSelect={() => {
+                              setBalitaId(b.id);
+                              setOpen(false);
+                            }}
+                          >
+                            <span className="flex-1 truncate">
+                              {b.nama_lengkap} ({b.nik})
+                            </span>
+                            {balitaId === b.id && (
+                              <Check className="ml-2 h-4 w-4" />
+                            )}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               {selected && (
                 <div className="text-xs text-muted-foreground">
                   {selected.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"} · {hitungUsiaBulan(selected.tanggal_lahir)} bulan · {selected.alamat_rt}
