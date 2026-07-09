@@ -7,11 +7,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
 import { balitaListQuery } from "@/lib/queries";
 import { hitungStatusGizi, badgeGizi, hitungUsiaBulan, detailZScore } from "@/lib/gizi";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Activity } from "lucide-react";
+import { Activity, ChevronsUpDown, Check } from "lucide-react";
 
 export const Route = createFileRoute("/pencatatan/")({
   loader: ({ context }) => { context.queryClient.ensureQueryData(balitaListQuery()); },
@@ -22,6 +31,7 @@ function Pencatatan() {
   const { data: balita } = useSuspenseQuery(balitaListQuery());
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
   const [balitaId, setBalitaId] = useState("");
   const [tanggal, setTanggal] = useState(() => new Date().toISOString().slice(0, 10));
   const [bb, setBb] = useState("");
@@ -71,13 +81,48 @@ function Pencatatan() {
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5">
               <Label>Pilih Balita</Label>
-              <select value={balitaId} onChange={(e) => setBalitaId(e.target.value)}
-                className="h-12 w-full rounded-md border border-input bg-background px-3">
-                <option value="">-- Pilih --</option>
-                {balita.map((b) => (
-                  <option key={b.id} value={b.id}>{b.nama_lengkap} ({b.nik})</option>
-                ))}
-              </select>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="h-12 w-full justify-between rounded-xl px-3"
+                  >
+                    <span className="truncate">
+                      {selected ? `${selected.nama_lengkap} (${selected.nik})` : "Cari nama balita..."}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Ketik nama atau NIK..." />
+                    <CommandList>
+                      <CommandEmpty>Tidak ditemukan.</CommandEmpty>
+                      <CommandGroup>
+                        {balita.map((b) => (
+                          <CommandItem
+                            key={b.id}
+                            value={`${b.nama_lengkap} ${b.nik}`}
+                            onSelect={() => {
+                              setBalitaId(b.id);
+                              setOpen(false);
+                            }}
+                          >
+                            <span className="flex-1 truncate">
+                              {b.nama_lengkap} ({b.nik})
+                            </span>
+                            {balitaId === b.id && (
+                              <Check className="ml-2 h-4 w-4" />
+                            )}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               {selected && (
                 <div className="text-xs text-muted-foreground">
                   {selected.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"} · {hitungUsiaBulan(selected.tanggal_lahir)} bulan · {selected.alamat_rt}
