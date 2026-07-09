@@ -31,6 +31,7 @@ function Pencatatan() {
   const { data: balita } = useSuspenseQuery(balitaListQuery());
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
   const [balitaId, setBalitaId] = useState("");
   const [tanggal, setTanggal] = useState(() => new Date().toISOString().slice(0, 10));
   const [bb, setBb] = useState("");
