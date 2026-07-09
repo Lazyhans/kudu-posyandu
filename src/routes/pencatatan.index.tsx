@@ -7,11 +7,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
 import { balitaListQuery } from "@/lib/queries";
 import { hitungStatusGizi, badgeGizi, hitungUsiaBulan, detailZScore } from "@/lib/gizi";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Activity } from "lucide-react";
+import { Activity, ChevronsUpDown, Check } from "lucide-react";
 
 export const Route = createFileRoute("/pencatatan/")({
   loader: ({ context }) => { context.queryClient.ensureQueryData(balitaListQuery()); },
