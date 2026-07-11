@@ -23,6 +23,8 @@ export type Database = {
           nama_lengkap: string
           nama_orangtua: string
           nik: string
+          rt: string | null
+          rw: string | null
           tanggal_lahir: string
           updated_at: string
         }
@@ -34,6 +36,8 @@ export type Database = {
           nama_lengkap: string
           nama_orangtua: string
           nik: string
+          rt?: string | null
+          rw?: string | null
           tanggal_lahir: string
           updated_at?: string
         }
@@ -45,6 +49,8 @@ export type Database = {
           nama_lengkap?: string
           nama_orangtua?: string
           nik?: string
+          rt?: string | null
+          rw?: string | null
           tanggal_lahir?: string
           updated_at?: string
         }
@@ -56,6 +62,7 @@ export type Database = {
           id: string
           nama_lengkap: string
           no_hp: string | null
+          posko_rt: string | null
           posko_rw: string
           updated_at: string
           user_id: string
@@ -66,6 +73,7 @@ export type Database = {
           id?: string
           nama_lengkap: string
           no_hp?: string | null
+          posko_rt?: string | null
           posko_rw: string
           updated_at?: string
           user_id: string
@@ -76,6 +84,7 @@ export type Database = {
           id?: string
           nama_lengkap?: string
           no_hp?: string | null
+          posko_rt?: string | null
           posko_rw?: string
           updated_at?: string
           user_id?: string
