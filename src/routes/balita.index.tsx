@@ -61,9 +61,12 @@ function BalitaList() {
   async function handleUpdate(form: Omit<Balita, "id" | "created_at" | "updated_at">) {
     if (!editing) return;
     setBusy(true);
+    const rt = (form.rt ?? "").padStart(2, "0");
+    const rw = (form.rw ?? "").padStart(2, "0");
+    const payload = { ...form, rt, rw, alamat_rt: `RT ${rt} / RW ${rw}` };
     const { error } = await supabase
       .from("balita" as never)
-      .update(form as never)
+      .update(payload as never)
       .eq("id", editing.id);
     setBusy(false);
     if (error) return toast.error(error.message);
@@ -130,8 +133,9 @@ function BalitaList() {
                       <div className="truncate text-xs text-muted-foreground">
                         NIK {b.nik} · {b.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"} · {hitungUsiaBulan(b.tanggal_lahir)} bln
                       </div>
-                      <div className="truncate text-xs text-muted-foreground">
-                        {b.alamat_rt} · Ibu {b.nama_orangtua}
+                      <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <span className="rounded bg-primary/10 px-1.5 py-0.5 font-semibold text-primary">RT {b.rt ?? "-"}/RW {b.rw ?? "-"}</span>
+                        <span className="truncate">Ibu {b.nama_orangtua}</span>
                       </div>
                     </div>
                   </div>
@@ -219,6 +223,8 @@ function EditDialog({
       jenis_kelamin: balita.jenis_kelamin,
       nama_orangtua: balita.nama_orangtua,
       alamat_rt: balita.alamat_rt,
+      rt: balita.rt ?? "",
+      rw: balita.rw ?? "",
     });
   }
   if (!balita && form) setForm(null);
@@ -275,9 +281,15 @@ function EditDialog({
               <Label>Nama Orang Tua</Label>
               <Input value={form.nama_orangtua} onChange={set("nama_orangtua")} className="h-11" required />
             </div>
-            <div className="space-y-1.5">
-              <Label>Alamat RT</Label>
-              <Input value={form.alamat_rt} onChange={set("alamat_rt")} className="h-11" required />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>RT</Label>
+                <Input value={form.rt ?? ""} onChange={set("rt")} inputMode="numeric" className="h-11" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label>RW</Label>
+                <Input value={form.rw ?? ""} onChange={set("rw")} inputMode="numeric" className="h-11" required />
+              </div>
             </div>
             <DialogFooter className="gap-2 sm:gap-2">
               <Button type="button" variant="outline" onClick={onClose} disabled={busy}>Batal</Button>

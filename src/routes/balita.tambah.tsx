@@ -18,7 +18,7 @@ function TambahBalita() {
   const qc = useQueryClient();
   const [form, setForm] = useState({
     nama_lengkap: "", nik: "", tanggal_lahir: "", jenis_kelamin: "L",
-    nama_orangtua: "", alamat_rt: "",
+    nama_orangtua: "", rt: "", rw: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +27,7 @@ function TambahBalita() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.nama_lengkap || !form.nik || !form.tanggal_lahir || !form.nama_orangtua || !form.alamat_rt) {
+    if (!form.nama_lengkap || !form.nik || !form.tanggal_lahir || !form.nama_orangtua || !form.rt || !form.rw) {
       toast.error("Semua isian wajib diisi");
       return;
     }
@@ -35,8 +35,19 @@ function TambahBalita() {
       toast.error("NIK harus 16 digit angka");
       return;
     }
+    const rt = form.rt.padStart(2, "0");
+    const rw = form.rw.padStart(2, "0");
     setLoading(true);
-    const { error } = await supabase.from("balita" as never).insert(form as never);
+    const { error } = await supabase.from("balita" as never).insert({
+      nama_lengkap: form.nama_lengkap,
+      nik: form.nik,
+      tanggal_lahir: form.tanggal_lahir,
+      jenis_kelamin: form.jenis_kelamin,
+      nama_orangtua: form.nama_orangtua,
+      rt,
+      rw,
+      alamat_rt: `RT ${rt} / RW ${rw}`,
+    } as never);
     setLoading(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Balita berhasil ditambahkan");
@@ -68,9 +79,14 @@ function TambahBalita() {
             <Field label="Nama Ibu / Orang Tua">
               <Input value={form.nama_orangtua} onChange={set("nama_orangtua")} className="h-12" placeholder="Nama ibu/orang tua" />
             </Field>
-            <Field label="Alamat RT / RW">
-              <Input value={form.alamat_rt} onChange={set("alamat_rt")} className="h-12" placeholder="Contoh: RT 03 / RW 04" />
-            </Field>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="RT">
+                <Input value={form.rt} onChange={set("rt")} inputMode="numeric" className="h-12" placeholder="mis. 03" />
+              </Field>
+              <Field label="RW">
+                <Input value={form.rw} onChange={set("rw")} inputMode="numeric" className="h-12" placeholder="mis. 04" />
+              </Field>
+            </div>
             <Button type="submit" disabled={loading} className="h-12 w-full rounded-xl text-base font-semibold">
               {loading ? "Menyimpan..." : "Simpan Data Balita"}
             </Button>
