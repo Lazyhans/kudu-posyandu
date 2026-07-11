@@ -32,6 +32,8 @@ export type Balita = {
   jenis_kelamin: "L" | "P";
   nama_orangtua: string;
   alamat_rt: string;
+  rt: string | null;
+  rw: string | null;
   created_at: string;
   updated_at: string;
 };
