@@ -203,6 +203,7 @@ type KaderRow = {
   user_id: string;
   nama_lengkap: string;
   username: string;
+  posko_rt: string | null;
   posko_rw: string;
   no_hp: string | null;
 };
@@ -261,7 +262,7 @@ function KaderManagement() {
                       {k.no_hp ? ` · ${k.no_hp}` : ""}
                     </div>
                     <div className="mt-0.5 flex items-center gap-1 text-[11px] text-primary">
-                      <MapPin className="h-3 w-3" /> Posko {k.posko_rw}
+                      <MapPin className="h-3 w-3" /> Posko RT {k.posko_rt ?? "-"} / RW {k.posko_rw}
                     </div>
                   </div>
                 </div>
@@ -372,6 +373,7 @@ type CreateForm = {
   nama_lengkap: string;
   username: string;
   password: string;
+  posko_rt: string;
   posko_rw: string;
   no_hp: string;
 };
@@ -391,6 +393,7 @@ function KaderCreateDialog({
     nama_lengkap: "",
     username: "",
     password: "",
+    posko_rt: "",
     posko_rw: "",
     no_hp: "",
   });
@@ -403,7 +406,7 @@ function KaderCreateDialog({
       onOpenChange={(o) => {
         if (!o) {
           onClose();
-          setForm({ nama_lengkap: "", username: "", password: "", posko_rw: "", no_hp: "" });
+          setForm({ nama_lengkap: "", username: "", password: "", posko_rt: "", posko_rw: "", no_hp: "" });
         }
       }}
     >
@@ -435,9 +438,15 @@ function KaderCreateDialog({
               <Input type="password" value={form.password} onChange={set("password")} className="h-11" placeholder="min. 8 karakter" required />
             </div>
           </div>
-          <div className="space-y-1.5">
-            <Label>Posko RW</Label>
-            <Input value={form.posko_rw} onChange={set("posko_rw")} className="h-11" placeholder="mis. RW 04" required />
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label>Posko RT</Label>
+              <Input value={form.posko_rt} onChange={set("posko_rt")} className="h-11" placeholder="mis. 03" required />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Posko RW</Label>
+              <Input value={form.posko_rw} onChange={set("posko_rw")} className="h-11" placeholder="mis. 04" required />
+            </div>
           </div>
           <div className="space-y-1.5">
             <Label>No. HP (opsional)</Label>
@@ -456,7 +465,7 @@ function KaderCreateDialog({
   );
 }
 
-type EditForm = { nama_lengkap: string; posko_rw: string; no_hp: string; password: string };
+type EditForm = { nama_lengkap: string; posko_rt: string; posko_rw: string; no_hp: string; password: string };
 
 function KaderEditDialog({
   kader,
@@ -473,6 +482,7 @@ function KaderEditDialog({
   if (kader && !form) {
     setForm({
       nama_lengkap: kader.nama_lengkap,
+      posko_rt: kader.posko_rt ?? "",
       posko_rw: kader.posko_rw,
       no_hp: kader.no_hp ?? "",
       password: "",
@@ -501,9 +511,15 @@ function KaderEditDialog({
               <Label>Nama Lengkap</Label>
               <Input value={form.nama_lengkap} onChange={set("nama_lengkap")} className="h-11" required />
             </div>
-            <div className="space-y-1.5">
-              <Label>Posko RW</Label>
-              <Input value={form.posko_rw} onChange={set("posko_rw")} className="h-11" required />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Posko RT</Label>
+                <Input value={form.posko_rt} onChange={set("posko_rt")} className="h-11" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Posko RW</Label>
+                <Input value={form.posko_rw} onChange={set("posko_rw")} className="h-11" required />
+              </div>
             </div>
             <div className="space-y-1.5">
               <Label>No. HP</Label>

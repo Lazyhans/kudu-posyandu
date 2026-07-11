@@ -30,6 +30,7 @@ export const listKader = createServerFn({ method: "GET" })
       user_id: string;
       nama_lengkap: string;
       username: string;
+      posko_rt: string | null;
       posko_rw: string;
       no_hp: string | null;
       created_at: string;
@@ -43,6 +44,7 @@ export const createKader = createServerFn({ method: "POST" })
     nama_lengkap: string;
     username: string;
     password: string;
+    posko_rt: string;
     posko_rw: string;
     no_hp?: string;
   }) => d)
@@ -51,8 +53,8 @@ export const createKader = createServerFn({ method: "POST" })
     if (!/^[a-z0-9_.]{3,32}$/i.test(data.username))
       throw new Error("Username 3-32 karakter (huruf/angka/._)");
     if (data.password.length < 8) throw new Error("Password minimal 8 karakter");
-    if (!data.nama_lengkap.trim() || !data.posko_rw.trim())
-      throw new Error("Nama & Posko RW wajib diisi");
+    if (!data.nama_lengkap.trim() || !data.posko_rw.trim() || !data.posko_rt.trim())
+      throw new Error("Nama, Posko RT & Posko RW wajib diisi");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const email = `${data.username.toLowerCase()}@posyandu.local`;
@@ -78,7 +80,8 @@ export const createKader = createServerFn({ method: "POST" })
       user_id: userId,
       nama_lengkap: data.nama_lengkap.trim(),
       username: data.username.toLowerCase(),
-      posko_rw: data.posko_rw.trim(),
+      posko_rt: data.posko_rt.trim().padStart(2, "0"),
+      posko_rw: data.posko_rw.trim().padStart(2, "0"),
       no_hp: data.no_hp?.trim() || null,
     } as never);
     if (kErr) {
@@ -93,6 +96,7 @@ export const updateKader = createServerFn({ method: "POST" })
   .inputValidator((d: {
     id: string;
     nama_lengkap: string;
+    posko_rt: string;
     posko_rw: string;
     no_hp?: string;
     password?: string;
@@ -113,7 +117,8 @@ export const updateKader = createServerFn({ method: "POST" })
       .from("kader" as never)
       .update({
         nama_lengkap: data.nama_lengkap.trim(),
-        posko_rw: data.posko_rw.trim(),
+        posko_rt: data.posko_rt.trim().padStart(2, "0"),
+        posko_rw: data.posko_rw.trim().padStart(2, "0"),
         no_hp: data.no_hp?.trim() || null,
       } as never)
       .eq("id", data.id);
