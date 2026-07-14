@@ -56,6 +56,48 @@ export type Database = {
         }
         Relationships: []
       }
+      ibu_hamil: {
+        Row: {
+          alamat: string | null
+          created_at: string
+          hpht: string | null
+          id: string
+          nama_lengkap: string
+          nik: string
+          no_hp: string | null
+          rt: string | null
+          rw: string | null
+          tanggal_lahir: string
+          updated_at: string
+        }
+        Insert: {
+          alamat?: string | null
+          created_at?: string
+          hpht?: string | null
+          id?: string
+          nama_lengkap: string
+          nik: string
+          no_hp?: string | null
+          rt?: string | null
+          rw?: string | null
+          tanggal_lahir: string
+          updated_at?: string
+        }
+        Update: {
+          alamat?: string | null
+          created_at?: string
+          hpht?: string | null
+          id?: string
+          nama_lengkap?: string
+          nik?: string
+          no_hp?: string | null
+          rt?: string | null
+          rw?: string | null
+          tanggal_lahir?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       kader: {
         Row: {
           created_at: string
@@ -89,6 +131,48 @@ export type Database = {
           updated_at?: string
           user_id?: string
           username?: string
+        }
+        Relationships: []
+      }
+      lansia: {
+        Row: {
+          alamat: string | null
+          created_at: string
+          id: string
+          jenis_kelamin: string | null
+          nama_lengkap: string
+          nik: string
+          no_hp: string | null
+          rt: string | null
+          rw: string | null
+          tanggal_lahir: string
+          updated_at: string
+        }
+        Insert: {
+          alamat?: string | null
+          created_at?: string
+          id?: string
+          jenis_kelamin?: string | null
+          nama_lengkap: string
+          nik: string
+          no_hp?: string | null
+          rt?: string | null
+          rw?: string | null
+          tanggal_lahir: string
+          updated_at?: string
+        }
+        Update: {
+          alamat?: string | null
+          created_at?: string
+          id?: string
+          jenis_kelamin?: string | null
+          nama_lengkap?: string
+          nik?: string
+          no_hp?: string | null
+          rt?: string | null
+          rw?: string | null
+          tanggal_lahir?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -129,6 +213,97 @@ export type Database = {
             columns: ["balita_id"]
             isOneToOne: false
             referencedRelation: "balita"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pencatatan_ibu_hamil: {
+        Row: {
+          berat_badan: number
+          catatan: string | null
+          created_at: string
+          gula: number | null
+          ibu_hamil_id: string
+          id: string
+          lingkar_lengan: number | null
+          lingkar_perut: number | null
+          tanggal: string
+          tensi: string | null
+        }
+        Insert: {
+          berat_badan: number
+          catatan?: string | null
+          created_at?: string
+          gula?: number | null
+          ibu_hamil_id: string
+          id?: string
+          lingkar_lengan?: number | null
+          lingkar_perut?: number | null
+          tanggal?: string
+          tensi?: string | null
+        }
+        Update: {
+          berat_badan?: number
+          catatan?: string | null
+          created_at?: string
+          gula?: number | null
+          ibu_hamil_id?: string
+          id?: string
+          lingkar_lengan?: number | null
+          lingkar_perut?: number | null
+          tanggal?: string
+          tensi?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pencatatan_ibu_hamil_ibu_hamil_id_fkey"
+            columns: ["ibu_hamil_id"]
+            isOneToOne: false
+            referencedRelation: "ibu_hamil"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pencatatan_lansia: {
+        Row: {
+          berat_badan: number
+          catatan: string | null
+          created_at: string
+          gula: number | null
+          id: string
+          lansia_id: string
+          lingkar_badan: number | null
+          tanggal: string
+          tensi: string | null
+        }
+        Insert: {
+          berat_badan: number
+          catatan?: string | null
+          created_at?: string
+          gula?: number | null
+          id?: string
+          lansia_id: string
+          lingkar_badan?: number | null
+          tanggal?: string
+          tensi?: string | null
+        }
+        Update: {
+          berat_badan?: number
+          catatan?: string | null
+          created_at?: string
+          gula?: number | null
+          id?: string
+          lansia_id?: string
+          lingkar_badan?: number | null
+          tanggal?: string
+          tensi?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pencatatan_lansia_lansia_id_fkey"
+            columns: ["lansia_id"]
+            isOneToOne: false
+            referencedRelation: "lansia"
             referencedColumns: ["id"]
           },
         ]
