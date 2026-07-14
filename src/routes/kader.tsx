@@ -90,21 +90,31 @@ function KaderDashboard() {
 
         <div className="grid grid-cols-2 gap-3">
           <Button asChild size="lg" className="h-16 rounded-xl text-sm font-semibold">
-            <Link to="/pencatatan"><ClipboardPlus className="mr-2 h-5 w-5" /> Catat Hasil</Link>
-          </Button>
-          <Button asChild size="lg" variant="secondary" className="h-16 rounded-xl text-sm font-semibold">
-            <Link to="/balita/tambah"><UserPlus className="mr-2 h-5 w-5" /> Tambah Balita</Link>
-          </Button>
-          <Button asChild size="lg" variant="secondary" className="h-16 rounded-xl text-sm font-semibold">
             <Link to="/balita"><Users className="mr-2 h-5 w-5" /> Kelola Balita</Link>
           </Button>
+          <Button asChild size="lg" variant="secondary" className="h-16 rounded-xl text-sm font-semibold">
+            <Link to="/pencatatan"><ClipboardPlus className="mr-2 h-5 w-5" /> Catat Balita</Link>
+          </Button>
+          <Button asChild size="lg" className="h-16 rounded-xl text-sm font-semibold bg-pink-600 hover:bg-pink-700">
+            <Link to="/ibu-hamil"><UserPlus className="mr-2 h-5 w-5" /> Kelola Ibu Hamil</Link>
+          </Button>
+          <Button asChild size="lg" variant="secondary" className="h-16 rounded-xl text-sm font-semibold">
+            <Link to="/pencatatan/ibu-hamil"><ClipboardPlus className="mr-2 h-5 w-5" /> Catat Ibu Hamil</Link>
+          </Button>
+          <Button asChild size="lg" className="h-16 rounded-xl text-sm font-semibold bg-amber-600 hover:bg-amber-700">
+            <Link to="/lansia"><UserPlus className="mr-2 h-5 w-5" /> Kelola Lansia</Link>
+          </Button>
+          <Button asChild size="lg" variant="secondary" className="h-16 rounded-xl text-sm font-semibold">
+            <Link to="/pencatatan/lansia"><ClipboardPlus className="mr-2 h-5 w-5" /> Catat Lansia</Link>
+          </Button>
           <Button asChild size="lg" variant="outline" className="h-16 rounded-xl text-sm font-semibold">
-            <Link to="/profil"><Settings className="mr-2 h-5 w-5" /> Pengaturan Profil</Link>
+            <Link to="/profil"><Settings className="mr-2 h-5 w-5" /> Profil</Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="h-16 rounded-xl text-sm font-semibold">
             <Link to="/"><Home className="mr-2 h-5 w-5" /> Halaman Publik</Link>
           </Button>
         </div>
+
 
         <Card className="rounded-2xl">
           <CardContent className="p-4">
