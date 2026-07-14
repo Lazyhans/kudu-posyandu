@@ -16,9 +16,17 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RiwayatIndexRouteImport } from './routes/riwayat.index'
 import { Route as PencatatanIndexRouteImport } from './routes/pencatatan.index'
+import { Route as LansiaIndexRouteImport } from './routes/lansia.index'
+import { Route as IbuHamilIndexRouteImport } from './routes/ibu-hamil.index'
 import { Route as BalitaIndexRouteImport } from './routes/balita.index'
 import { Route as RiwayatIdRouteImport } from './routes/riwayat.$id'
+import { Route as PencatatanLansiaRouteImport } from './routes/pencatatan.lansia'
+import { Route as PencatatanIbuHamilRouteImport } from './routes/pencatatan.ibu-hamil'
+import { Route as LansiaTambahRouteImport } from './routes/lansia.tambah'
+import { Route as IbuHamilTambahRouteImport } from './routes/ibu-hamil.tambah'
 import { Route as BalitaTambahRouteImport } from './routes/balita.tambah'
+import { Route as RiwayatLansiaIdRouteImport } from './routes/riwayat.lansia.$id'
+import { Route as RiwayatIbuHamilIdRouteImport } from './routes/riwayat.ibu-hamil.$id'
 
 const ProfilRoute = ProfilRouteImport.update({
   id: '/profil',
@@ -55,6 +63,16 @@ const PencatatanIndexRoute = PencatatanIndexRouteImport.update({
   path: '/pencatatan/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LansiaIndexRoute = LansiaIndexRouteImport.update({
+  id: '/lansia/',
+  path: '/lansia/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IbuHamilIndexRoute = IbuHamilIndexRouteImport.update({
+  id: '/ibu-hamil/',
+  path: '/ibu-hamil/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BalitaIndexRoute = BalitaIndexRouteImport.update({
   id: '/balita/',
   path: '/balita/',
@@ -65,9 +83,39 @@ const RiwayatIdRoute = RiwayatIdRouteImport.update({
   path: '/riwayat/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PencatatanLansiaRoute = PencatatanLansiaRouteImport.update({
+  id: '/pencatatan/lansia',
+  path: '/pencatatan/lansia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PencatatanIbuHamilRoute = PencatatanIbuHamilRouteImport.update({
+  id: '/pencatatan/ibu-hamil',
+  path: '/pencatatan/ibu-hamil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LansiaTambahRoute = LansiaTambahRouteImport.update({
+  id: '/lansia/tambah',
+  path: '/lansia/tambah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IbuHamilTambahRoute = IbuHamilTambahRouteImport.update({
+  id: '/ibu-hamil/tambah',
+  path: '/ibu-hamil/tambah',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BalitaTambahRoute = BalitaTambahRouteImport.update({
   id: '/balita/tambah',
   path: '/balita/tambah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiwayatLansiaIdRoute = RiwayatLansiaIdRouteImport.update({
+  id: '/riwayat/lansia/$id',
+  path: '/riwayat/lansia/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiwayatIbuHamilIdRoute = RiwayatIbuHamilIdRouteImport.update({
+  id: '/riwayat/ibu-hamil/$id',
+  path: '/riwayat/ibu-hamil/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -78,10 +126,18 @@ export interface FileRoutesByFullPath {
   '/kader': typeof KaderRoute
   '/profil': typeof ProfilRoute
   '/balita/tambah': typeof BalitaTambahRoute
+  '/ibu-hamil/tambah': typeof IbuHamilTambahRoute
+  '/lansia/tambah': typeof LansiaTambahRoute
+  '/pencatatan/ibu-hamil': typeof PencatatanIbuHamilRoute
+  '/pencatatan/lansia': typeof PencatatanLansiaRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita/': typeof BalitaIndexRoute
+  '/ibu-hamil/': typeof IbuHamilIndexRoute
+  '/lansia/': typeof LansiaIndexRoute
   '/pencatatan/': typeof PencatatanIndexRoute
   '/riwayat/': typeof RiwayatIndexRoute
+  '/riwayat/ibu-hamil/$id': typeof RiwayatIbuHamilIdRoute
+  '/riwayat/lansia/$id': typeof RiwayatLansiaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -90,10 +146,18 @@ export interface FileRoutesByTo {
   '/kader': typeof KaderRoute
   '/profil': typeof ProfilRoute
   '/balita/tambah': typeof BalitaTambahRoute
+  '/ibu-hamil/tambah': typeof IbuHamilTambahRoute
+  '/lansia/tambah': typeof LansiaTambahRoute
+  '/pencatatan/ibu-hamil': typeof PencatatanIbuHamilRoute
+  '/pencatatan/lansia': typeof PencatatanLansiaRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita': typeof BalitaIndexRoute
+  '/ibu-hamil': typeof IbuHamilIndexRoute
+  '/lansia': typeof LansiaIndexRoute
   '/pencatatan': typeof PencatatanIndexRoute
   '/riwayat': typeof RiwayatIndexRoute
+  '/riwayat/ibu-hamil/$id': typeof RiwayatIbuHamilIdRoute
+  '/riwayat/lansia/$id': typeof RiwayatLansiaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,10 +167,18 @@ export interface FileRoutesById {
   '/kader': typeof KaderRoute
   '/profil': typeof ProfilRoute
   '/balita/tambah': typeof BalitaTambahRoute
+  '/ibu-hamil/tambah': typeof IbuHamilTambahRoute
+  '/lansia/tambah': typeof LansiaTambahRoute
+  '/pencatatan/ibu-hamil': typeof PencatatanIbuHamilRoute
+  '/pencatatan/lansia': typeof PencatatanLansiaRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita/': typeof BalitaIndexRoute
+  '/ibu-hamil/': typeof IbuHamilIndexRoute
+  '/lansia/': typeof LansiaIndexRoute
   '/pencatatan/': typeof PencatatanIndexRoute
   '/riwayat/': typeof RiwayatIndexRoute
+  '/riwayat/ibu-hamil/$id': typeof RiwayatIbuHamilIdRoute
+  '/riwayat/lansia/$id': typeof RiwayatLansiaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,10 +189,18 @@ export interface FileRouteTypes {
     | '/kader'
     | '/profil'
     | '/balita/tambah'
+    | '/ibu-hamil/tambah'
+    | '/lansia/tambah'
+    | '/pencatatan/ibu-hamil'
+    | '/pencatatan/lansia'
     | '/riwayat/$id'
     | '/balita/'
+    | '/ibu-hamil/'
+    | '/lansia/'
     | '/pencatatan/'
     | '/riwayat/'
+    | '/riwayat/ibu-hamil/$id'
+    | '/riwayat/lansia/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,10 +209,18 @@ export interface FileRouteTypes {
     | '/kader'
     | '/profil'
     | '/balita/tambah'
+    | '/ibu-hamil/tambah'
+    | '/lansia/tambah'
+    | '/pencatatan/ibu-hamil'
+    | '/pencatatan/lansia'
     | '/riwayat/$id'
     | '/balita'
+    | '/ibu-hamil'
+    | '/lansia'
     | '/pencatatan'
     | '/riwayat'
+    | '/riwayat/ibu-hamil/$id'
+    | '/riwayat/lansia/$id'
   id:
     | '__root__'
     | '/'
@@ -141,10 +229,18 @@ export interface FileRouteTypes {
     | '/kader'
     | '/profil'
     | '/balita/tambah'
+    | '/ibu-hamil/tambah'
+    | '/lansia/tambah'
+    | '/pencatatan/ibu-hamil'
+    | '/pencatatan/lansia'
     | '/riwayat/$id'
     | '/balita/'
+    | '/ibu-hamil/'
+    | '/lansia/'
     | '/pencatatan/'
     | '/riwayat/'
+    | '/riwayat/ibu-hamil/$id'
+    | '/riwayat/lansia/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -154,10 +250,18 @@ export interface RootRouteChildren {
   KaderRoute: typeof KaderRoute
   ProfilRoute: typeof ProfilRoute
   BalitaTambahRoute: typeof BalitaTambahRoute
+  IbuHamilTambahRoute: typeof IbuHamilTambahRoute
+  LansiaTambahRoute: typeof LansiaTambahRoute
+  PencatatanIbuHamilRoute: typeof PencatatanIbuHamilRoute
+  PencatatanLansiaRoute: typeof PencatatanLansiaRoute
   RiwayatIdRoute: typeof RiwayatIdRoute
   BalitaIndexRoute: typeof BalitaIndexRoute
+  IbuHamilIndexRoute: typeof IbuHamilIndexRoute
+  LansiaIndexRoute: typeof LansiaIndexRoute
   PencatatanIndexRoute: typeof PencatatanIndexRoute
   RiwayatIndexRoute: typeof RiwayatIndexRoute
+  RiwayatIbuHamilIdRoute: typeof RiwayatIbuHamilIdRoute
+  RiwayatLansiaIdRoute: typeof RiwayatLansiaIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -211,6 +315,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PencatatanIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lansia/': {
+      id: '/lansia/'
+      path: '/lansia'
+      fullPath: '/lansia/'
+      preLoaderRoute: typeof LansiaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ibu-hamil/': {
+      id: '/ibu-hamil/'
+      path: '/ibu-hamil'
+      fullPath: '/ibu-hamil/'
+      preLoaderRoute: typeof IbuHamilIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/balita/': {
       id: '/balita/'
       path: '/balita'
@@ -225,11 +343,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RiwayatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pencatatan/lansia': {
+      id: '/pencatatan/lansia'
+      path: '/pencatatan/lansia'
+      fullPath: '/pencatatan/lansia'
+      preLoaderRoute: typeof PencatatanLansiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pencatatan/ibu-hamil': {
+      id: '/pencatatan/ibu-hamil'
+      path: '/pencatatan/ibu-hamil'
+      fullPath: '/pencatatan/ibu-hamil'
+      preLoaderRoute: typeof PencatatanIbuHamilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lansia/tambah': {
+      id: '/lansia/tambah'
+      path: '/lansia/tambah'
+      fullPath: '/lansia/tambah'
+      preLoaderRoute: typeof LansiaTambahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ibu-hamil/tambah': {
+      id: '/ibu-hamil/tambah'
+      path: '/ibu-hamil/tambah'
+      fullPath: '/ibu-hamil/tambah'
+      preLoaderRoute: typeof IbuHamilTambahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/balita/tambah': {
       id: '/balita/tambah'
       path: '/balita/tambah'
       fullPath: '/balita/tambah'
       preLoaderRoute: typeof BalitaTambahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/riwayat/lansia/$id': {
+      id: '/riwayat/lansia/$id'
+      path: '/riwayat/lansia/$id'
+      fullPath: '/riwayat/lansia/$id'
+      preLoaderRoute: typeof RiwayatLansiaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/riwayat/ibu-hamil/$id': {
+      id: '/riwayat/ibu-hamil/$id'
+      path: '/riwayat/ibu-hamil/$id'
+      fullPath: '/riwayat/ibu-hamil/$id'
+      preLoaderRoute: typeof RiwayatIbuHamilIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -242,10 +402,18 @@ const rootRouteChildren: RootRouteChildren = {
   KaderRoute: KaderRoute,
   ProfilRoute: ProfilRoute,
   BalitaTambahRoute: BalitaTambahRoute,
+  IbuHamilTambahRoute: IbuHamilTambahRoute,
+  LansiaTambahRoute: LansiaTambahRoute,
+  PencatatanIbuHamilRoute: PencatatanIbuHamilRoute,
+  PencatatanLansiaRoute: PencatatanLansiaRoute,
   RiwayatIdRoute: RiwayatIdRoute,
   BalitaIndexRoute: BalitaIndexRoute,
+  IbuHamilIndexRoute: IbuHamilIndexRoute,
+  LansiaIndexRoute: LansiaIndexRoute,
   PencatatanIndexRoute: PencatatanIndexRoute,
   RiwayatIndexRoute: RiwayatIndexRoute,
+  RiwayatIbuHamilIdRoute: RiwayatIbuHamilIdRoute,
+  RiwayatLansiaIdRoute: RiwayatLansiaIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
