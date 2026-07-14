@@ -20,6 +20,7 @@ import { Route as LansiaIndexRouteImport } from './routes/lansia.index'
 import { Route as IbuHamilIndexRouteImport } from './routes/ibu-hamil.index'
 import { Route as BalitaIndexRouteImport } from './routes/balita.index'
 import { Route as RiwayatIdRouteImport } from './routes/riwayat.$id'
+import { Route as PencatatanLansiaRouteImport } from './routes/pencatatan.lansia'
 import { Route as PencatatanIbuHamilRouteImport } from './routes/pencatatan.ibu-hamil'
 import { Route as LansiaTambahRouteImport } from './routes/lansia.tambah'
 import { Route as IbuHamilTambahRouteImport } from './routes/ibu-hamil.tambah'
@@ -81,6 +82,11 @@ const RiwayatIdRoute = RiwayatIdRouteImport.update({
   path: '/riwayat/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PencatatanLansiaRoute = PencatatanLansiaRouteImport.update({
+  id: '/pencatatan/lansia',
+  path: '/pencatatan/lansia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PencatatanIbuHamilRoute = PencatatanIbuHamilRouteImport.update({
   id: '/pencatatan/ibu-hamil',
   path: '/pencatatan/ibu-hamil',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/ibu-hamil/tambah': typeof IbuHamilTambahRoute
   '/lansia/tambah': typeof LansiaTambahRoute
   '/pencatatan/ibu-hamil': typeof PencatatanIbuHamilRoute
+  '/pencatatan/lansia': typeof PencatatanLansiaRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita/': typeof BalitaIndexRoute
   '/ibu-hamil/': typeof IbuHamilIndexRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/ibu-hamil/tambah': typeof IbuHamilTambahRoute
   '/lansia/tambah': typeof LansiaTambahRoute
   '/pencatatan/ibu-hamil': typeof PencatatanIbuHamilRoute
+  '/pencatatan/lansia': typeof PencatatanLansiaRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita': typeof BalitaIndexRoute
   '/ibu-hamil': typeof IbuHamilIndexRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/ibu-hamil/tambah': typeof IbuHamilTambahRoute
   '/lansia/tambah': typeof LansiaTambahRoute
   '/pencatatan/ibu-hamil': typeof PencatatanIbuHamilRoute
+  '/pencatatan/lansia': typeof PencatatanLansiaRoute
   '/riwayat/$id': typeof RiwayatIdRoute
   '/balita/': typeof BalitaIndexRoute
   '/ibu-hamil/': typeof IbuHamilIndexRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/ibu-hamil/tambah'
     | '/lansia/tambah'
     | '/pencatatan/ibu-hamil'
+    | '/pencatatan/lansia'
     | '/riwayat/$id'
     | '/balita/'
     | '/ibu-hamil/'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/ibu-hamil/tambah'
     | '/lansia/tambah'
     | '/pencatatan/ibu-hamil'
+    | '/pencatatan/lansia'
     | '/riwayat/$id'
     | '/balita'
     | '/ibu-hamil'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/ibu-hamil/tambah'
     | '/lansia/tambah'
     | '/pencatatan/ibu-hamil'
+    | '/pencatatan/lansia'
     | '/riwayat/$id'
     | '/balita/'
     | '/ibu-hamil/'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   IbuHamilTambahRoute: typeof IbuHamilTambahRoute
   LansiaTambahRoute: typeof LansiaTambahRoute
   PencatatanIbuHamilRoute: typeof PencatatanIbuHamilRoute
+  PencatatanLansiaRoute: typeof PencatatanLansiaRoute
   RiwayatIdRoute: typeof RiwayatIdRoute
   BalitaIndexRoute: typeof BalitaIndexRoute
   IbuHamilIndexRoute: typeof IbuHamilIndexRoute
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RiwayatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pencatatan/lansia': {
+      id: '/pencatatan/lansia'
+      path: '/pencatatan/lansia'
+      fullPath: '/pencatatan/lansia'
+      preLoaderRoute: typeof PencatatanLansiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pencatatan/ibu-hamil': {
       id: '/pencatatan/ibu-hamil'
       path: '/pencatatan/ibu-hamil'
@@ -365,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   IbuHamilTambahRoute: IbuHamilTambahRoute,
   LansiaTambahRoute: LansiaTambahRoute,
   PencatatanIbuHamilRoute: PencatatanIbuHamilRoute,
+  PencatatanLansiaRoute: PencatatanLansiaRoute,
   RiwayatIdRoute: RiwayatIdRoute,
   BalitaIndexRoute: BalitaIndexRoute,
   IbuHamilIndexRoute: IbuHamilIndexRoute,
