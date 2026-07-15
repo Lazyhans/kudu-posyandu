@@ -149,7 +149,10 @@ function AdminDashboard() {
         <Card className="rounded-2xl">
           <CardContent className="p-4">
             <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
-              <TrendingUp className="h-4 w-4 text-primary" /> Distribusi Status Gizi
+              <TrendingUp className="h-4 w-4 text-primary" /> Distribusi Status Gizi Anak
+            </div>
+            <div className="text-xs text-muted-foreground mb-2">
+              Berdasarkan data penimbangan balita terbaru per kategori status gizi.
             </div>
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
